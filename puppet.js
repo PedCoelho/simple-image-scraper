@@ -30,16 +30,26 @@ async function getAllSrc(pageUrl, browser) {
     if (Array.isArray(pageUrl)) {
         for (url of pageUrl) {
             var page = await browser.newPage();
-            await page.goto(url, {
-                waitUntil: ['domcontentloaded', 'load']
-            });
-           await getImgs();
+            try{
+                await page.goto(url, {
+                    waitUntil: ['domcontentloaded', 'load']
+                });
+            }catch(e){
+                console.error('//URL Inválida// '+e);
+                return browser.close();
+            }
+            await getImgs();
         }
     } else {
         var page = await browser.newPage();
-        await page.goto(pageUrl, {
-            waitUntil: ['domcontentloaded', 'load']
-        });
+        try{
+            await page.goto(pageUrl, {
+                waitUntil: ['domcontentloaded', 'load']
+            });
+        }catch(e){
+            console.error('//URL Inválida// '+e);
+            return browser.close();
+        }
      await getImgs();
     }
 
